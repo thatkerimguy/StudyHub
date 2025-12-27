@@ -191,12 +191,15 @@ a:hover {
     height: 44px;
     margin: 0 auto;
     border-radius: var(--border-radius-sm);
+    display: flex;
+    align-items: center;
 }
 
 .sidebar.collapsed .nav-item i {
     margin: 0;
     font-size: 1.25rem;
     width: auto;
+    flex-shrink: 0;
 }
 
 .sidebar.collapsed .logo-toggle {
@@ -237,12 +240,11 @@ a:hover {
     background: var(--bg-hover);
 }
 
-.sidebar.collapsed .logo-toggle span {
-    display: none;
-}
+/* Logo toggle span hidden via opacity/width for smooth animation (not display:none) */
 
 .sidebar.collapsed .logo-toggle {
     padding: 0.5rem;
+    justify-content: center;
 }
 
 .sidebar-nav {
@@ -262,18 +264,22 @@ a:hover {
     border-radius: var(--border-radius-sm);
     color: var(--text-secondary);
     font-weight: 500;
-    transition: all var(--transition-normal);
+    transition: all var(--transition-normal), padding var(--transition-normal), width var(--transition-normal), height var(--transition-normal), margin var(--transition-normal);
     white-space: nowrap;
 }
 
 .nav-item span {
-    transition: opacity 0.15s ease, width 0.3s ease;
+    display: inline-block;
+    transition: opacity var(--transition-normal), width var(--transition-normal);
+    overflow: hidden;
+    white-space: nowrap;
 }
 
 .nav-item i {
     font-size: 1.1rem;
-    width: 20px;
+    min-width: 20px;
     text-align: center;
+    flex-shrink: 0;
 }
 
 .nav-item:hover {
@@ -294,11 +300,10 @@ a:hover {
     overflow: hidden;
 }
 
-/* Base transitions for sidebar text elements - enables smooth animation in both directions */
-.nav-item span,
+/* Logo toggle span transitions */
 .logo-toggle span {
     display: inline-block;
-    transition: opacity var(--transition-normal), width var(--transition-normal), margin var(--transition-normal);
+    transition: opacity var(--transition-normal), width var(--transition-normal);
     overflow: hidden;
     white-space: nowrap;
 }
