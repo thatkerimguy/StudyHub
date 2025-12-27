@@ -71,10 +71,10 @@ const App = {
         // Check if mobile button already exists
         if (document.querySelector('.mobile-menu-toggle')) return;
 
-        // Add mobile menu button
+        // Add mobile menu button with logo
         const mobileBtn = document.createElement('button');
         mobileBtn.className = 'mobile-menu-toggle';
-        mobileBtn.innerHTML = '<i class="fas fa-bars"></i>';
+        mobileBtn.innerHTML = '<i class="fas fa-graduation-cap"></i><span>StudyHub</span>';
         document.body.appendChild(mobileBtn);
 
         // Add overlay for mobile
@@ -87,20 +87,12 @@ const App = {
         mobileBtn.addEventListener('click', () => {
             sidebar?.classList.toggle('open');
             overlay.classList.toggle('active', sidebar?.classList.contains('open'));
-            // Update icon
-            const icon = mobileBtn.querySelector('i');
-            if (sidebar?.classList.contains('open')) {
-                icon.className = 'fas fa-times';
-            } else {
-                icon.className = 'fas fa-bars';
-            }
         });
 
         // Close sidebar when clicking overlay
         overlay.addEventListener('click', () => {
             sidebar?.classList.remove('open');
             overlay.classList.remove('active');
-            mobileBtn.querySelector('i').className = 'fas fa-bars';
         });
 
         // Close sidebar on nav click (mobile)
@@ -109,7 +101,6 @@ const App = {
                 if (window.innerWidth <= 768) {
                     sidebar?.classList.remove('open');
                     overlay.classList.remove('active');
-                    mobileBtn.querySelector('i').className = 'fas fa-bars';
                 }
             });
         });
