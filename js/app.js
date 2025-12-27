@@ -71,10 +71,11 @@ const App = {
         // Check if mobile button already exists
         if (document.querySelector('.mobile-menu-toggle')) return;
 
-        // Add mobile menu button with logo
+        // Add mobile menu button with just the icon
         const mobileBtn = document.createElement('button');
         mobileBtn.className = 'mobile-menu-toggle';
-        mobileBtn.innerHTML = '<i class="fas fa-graduation-cap"></i><span>StudyHub</span>';
+        mobileBtn.innerHTML = '<i class="fas fa-graduation-cap"></i>';
+        mobileBtn.setAttribute('aria-label', 'Open menu');
         document.body.appendChild(mobileBtn);
 
         // Add overlay for mobile

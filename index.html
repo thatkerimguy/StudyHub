@@ -1,26 +1,26 @@
 <!DOCTYPE html>
 <html lang="tr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>StudyHub - Verimli Çalışma Platformu</title>
-    <meta name="description" content="Sınavlarına en verimli şekilde hazırlan. Flashcard, Pomodoro, Notlar, Quiz ve daha fazlası.">
+    <meta name="description"
+        content="Sınavlarına en verimli şekilde hazırlan. Flashcard, Pomodoro, Notlar, Quiz ve daha fazlası.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="styles/main.css">
 </head>
+
 <body>
     <!-- Sidebar Navigation -->
     <aside class="sidebar" id="sidebar">
         <div class="sidebar-header">
-            <div class="logo">
+            <button class="logo-toggle" id="sidebarToggle">
                 <i class="fas fa-graduation-cap"></i>
                 <span>StudyHub</span>
-            </div>
-            <button class="sidebar-toggle" id="sidebarToggle">
-                <i class="fas fa-bars"></i>
             </button>
         </div>
 
@@ -211,8 +211,8 @@
                 <div class="timer-display">
                     <div class="timer-circle" id="timerCircle">
                         <svg class="timer-svg" viewBox="0 0 100 100">
-                            <circle class="timer-bg" cx="50" cy="50" r="45"/>
-                            <circle class="timer-progress" cx="50" cy="50" r="45" id="timerProgress"/>
+                            <circle class="timer-bg" cx="50" cy="50" r="45" />
+                            <circle class="timer-progress" cx="50" cy="50" r="45" id="timerProgress" />
                         </svg>
                         <div class="timer-text">
                             <span class="timer-time" id="timerTime">25:00</span>
@@ -307,7 +307,8 @@
                         </button>
                     </div>
                     <input type="text" class="note-title-input" id="noteTitle" placeholder="Not başlığı...">
-                    <div class="note-content" id="noteContent" contenteditable="true" data-placeholder="Notlarını buraya yaz..."></div>
+                    <div class="note-content" id="noteContent" contenteditable="true"
+                        data-placeholder="Notlarını buraya yaz..."></div>
                     <div class="editor-status">
                         <span id="saveStatus">Kaydedildi</span>
                     </div>
@@ -725,4 +726,5 @@
     <script src="js/music.js"></script>
     <script src="js/app.js"></script>
 </body>
+
 </html>
