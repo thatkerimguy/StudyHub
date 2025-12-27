@@ -174,7 +174,9 @@ a:hover {
 .sidebar.collapsed .nav-item span,
 .sidebar.collapsed .logo-toggle span,
 .sidebar.collapsed .sidebar-footer {
-    display: none;
+    opacity: 0;
+    width: 0;
+    overflow: hidden;
 }
 
 .sidebar.collapsed .sidebar-header {
@@ -260,8 +262,12 @@ a:hover {
     border-radius: var(--border-radius-sm);
     color: var(--text-secondary);
     font-weight: 500;
-    transition: all var(--transition-fast);
+    transition: all var(--transition-normal);
     white-space: nowrap;
+}
+
+.nav-item span {
+    transition: opacity 0.15s ease, width 0.3s ease;
 }
 
 .nav-item i {
@@ -284,6 +290,17 @@ a:hover {
 .sidebar-footer {
     padding: 1rem;
     border-top: 1px solid rgba(255, 255, 255, 0.05);
+    transition: opacity var(--transition-normal), width var(--transition-normal), padding var(--transition-normal);
+    overflow: hidden;
+}
+
+/* Base transitions for sidebar text elements - enables smooth animation in both directions */
+.nav-item span,
+.logo-toggle span {
+    display: inline-block;
+    transition: opacity var(--transition-normal), width var(--transition-normal), margin var(--transition-normal);
+    overflow: hidden;
+    white-space: nowrap;
 }
 
 .subject-selector label {
