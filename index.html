@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StudyHub - Verimli Çalışma Platformu</title>
+    <meta name="description" content="Sınavlarına en verimli şekilde hazırlan. Flashcard, Pomodoro, Notlar, Quiz ve daha fazlası.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="styles/main.css">
+</head>
+<body>
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="logo">
+                <i class="fas fa-graduation-cap"></i>
+                <span>StudyHub</span>
+            </div>
+            <button class="sidebar-toggle" id="sidebarToggle">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+
+        <nav class="sidebar-nav">
+            <a href="#" class="nav-item active" data-view="dashboard">
+                <i class="fas fa-home"></i>
+                <span>Ana Sayfa</span>
+            </a>
+            <a href="#" class="nav-item" data-view="flashcards">
+                <i class="fas fa-clone"></i>
+                <span>Flashcard'lar</span>
+            </a>
+            <a href="#" class="nav-item" data-view="pomodoro">
+                <i class="fas fa-clock"></i>
+                <span>Pomodoro</span>
+            </a>
+            <a href="#" class="nav-item" data-view="notes">
+                <i class="fas fa-sticky-note"></i>
+                <span>Notlar</span>
+            </a>
+            <a href="#" class="nav-item" data-view="quiz">
+                <i class="fas fa-question-circle"></i>
+                <span>Quiz</span>
+            </a>
+            <a href="#" class="nav-item" data-view="progress">
+                <i class="fas fa-chart-line"></i>
+                <span>İlerleme</span>
+            </a>
+            <a href="#" class="nav-item" data-view="planner">
+                <i class="fas fa-calendar-alt"></i>
+                <span>Planlayıcı</span>
+            </a>
+            <a href="#" class="nav-item" data-view="focus">
+                <i class="fas fa-bullseye"></i>
+                <span>Odak Modu</span>
+            </a>
+        </nav>
+
+        <div class="sidebar-footer">
+            <div class="subject-selector">
+                <label>Aktif Ders:</label>
+                <select id="activeSubject">
+                    <option value="all">Tüm Dersler</option>
+                    <option value="almanca">Almanca</option>
+                    <option value="biyoloji">Biyoloji</option>
+                    <option value="turkce">Türk Dili ve Edebiyatı</option>
+                    <option value="matematik">Matematik</option>
+                    <option value="din">Din Kültürü</option>
+                    <option value="ingilizce">İngilizce</option>
+                    <option value="kimya">Kimya</option>
+                    <option value="fizik">Fizik</option>
+                </select>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="main-content" id="mainContent">
+        <!-- Dashboard View -->
+        <section class="view active" id="view-dashboard">
+            <header class="view-header">
+                <h1>Hoş Geldin! 👋</h1>
+                <p class="subtitle">Bugün ne çalışmak istersin?</p>
+            </header>
+
+            <!-- Quick Stats -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: var(--gradient-purple);">
+                        <i class="fas fa-fire"></i>
+                    </div>
+                    <div class="stat-info">
+                        <span class="stat-value" id="streakCount">0</span>
+                        <span class="stat-label">Günlük Seri</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: var(--gradient-blue);">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div class="stat-info">
+                        <span class="stat-value" id="todayMinutes">0</span>
+                        <span class="stat-label">Dakika Bugün</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: var(--gradient-green);">
+                        <i class="fas fa-clone"></i>
+                    </div>
+                    <div class="stat-info">
+                        <span class="stat-value" id="cardsReviewed">0</span>
+                        <span class="stat-label">Kart İncelendi</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: var(--gradient-orange);">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <div class="stat-info">
+                        <span class="stat-value" id="quizScore">0%</span>
+                        <span class="stat-label">Quiz Başarısı</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Subject Cards -->
+            <h2 class="section-title">Derslerim</h2>
+            <div class="subjects-grid" id="subjectsGrid">
+                <!-- Subjects will be rendered by JS -->
+            </div>
+
+            <!-- Quick Actions -->
+            <h2 class="section-title">Hızlı Başlat</h2>
+            <div class="quick-actions">
+                <button class="action-btn" data-action="start-pomodoro">
+                    <i class="fas fa-play"></i>
+                    <span>Pomodoro Başlat</span>
+                </button>
+                <button class="action-btn" data-action="review-cards">
+                    <i class="fas fa-redo"></i>
+                    <span>Kartları Gözden Geçir</span>
+                </button>
+                <button class="action-btn" data-action="quick-quiz">
+                    <i class="fas fa-bolt"></i>
+                    <span>Hızlı Quiz</span>
+                </button>
+                <button class="action-btn" data-action="focus-mode">
+                    <i class="fas fa-moon"></i>
+                    <span>Odak Modu</span>
+                </button>
+            </div>
+        </section>
+
+        <!-- Flashcards View -->
+        <section class="view" id="view-flashcards">
+            <header class="view-header">
+                <h1><i class="fas fa-clone"></i> Flashcard'lar</h1>
+                <button class="btn btn-primary" id="createCardBtn">
+                    <i class="fas fa-plus"></i> Yeni Kart
+                </button>
+            </header>
+
+            <!-- Flashcard Deck Selection -->
+            <div class="deck-tabs" id="deckTabs">
+                <!-- Tabs rendered by JS -->
+            </div>
+
+            <!-- Flashcard Study Area -->
+            <div class="flashcard-container" id="flashcardContainer">
+                <div class="flashcard-empty">
+                    <i class="fas fa-inbox"></i>
+                    <p>Henüz kart yok. Yeni bir kart oluştur!</p>
+                </div>
+            </div>
+
+            <!-- Flashcard Controls -->
+            <div class="flashcard-controls hidden" id="flashcardControls">
+                <button class="control-btn" id="prevCard">
+                    <i class="fas fa-arrow-left"></i>
+                </button>
+                <div class="card-counter">
+                    <span id="currentCardNum">1</span> / <span id="totalCards">0</span>
+                </div>
+                <button class="control-btn" id="nextCard">
+                    <i class="fas fa-arrow-right"></i>
+                </button>
+            </div>
+
+            <!-- Rating Buttons (for spaced repetition) -->
+            <div class="rating-buttons hidden" id="ratingButtons">
+                <p>Bu kartı ne kadar iyi biliyorsun?</p>
+                <div class="rating-options">
+                    <button class="rating-btn" data-rating="1">Hiç 😕</button>
+                    <button class="rating-btn" data-rating="2">Zor 🤔</button>
+                    <button class="rating-btn" data-rating="3">İyi 😊</button>
+                    <button class="rating-btn" data-rating="4">Mükemmel 🎉</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Pomodoro View -->
+        <section class="view" id="view-pomodoro">
+            <header class="view-header">
+                <h1><i class="fas fa-clock"></i> Pomodoro Zamanlayıcı</h1>
+            </header>
+
+            <div class="pomodoro-container">
+                <div class="timer-display">
+                    <div class="timer-circle" id="timerCircle">
+                        <svg class="timer-svg" viewBox="0 0 100 100">
+                            <circle class="timer-bg" cx="50" cy="50" r="45"/>
+                            <circle class="timer-progress" cx="50" cy="50" r="45" id="timerProgress"/>
+                        </svg>
+                        <div class="timer-text">
+                            <span class="timer-time" id="timerTime">25:00</span>
+                            <span class="timer-label" id="timerLabel">Çalışma</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="timer-controls">
+                    <button class="timer-btn" id="startTimer">
+                        <i class="fas fa-play"></i>
+                    </button>
+                    <button class="timer-btn" id="pauseTimer" disabled>
+                        <i class="fas fa-pause"></i>
+                    </button>
+                    <button class="timer-btn" id="resetTimer">
+                        <i class="fas fa-redo"></i>
+                    </button>
+                </div>
+
+                <div class="session-info">
+                    <div class="session-stat">
+                        <span class="session-value" id="completedSessions">0</span>
+                        <span class="session-label">Tamamlanan Oturum</span>
+                    </div>
+                    <div class="session-stat">
+                        <span class="session-value" id="totalFocusTime">0 dk</span>
+                        <span class="session-label">Toplam Odak Süresi</span>
+                    </div>
+                </div>
+
+                <div class="timer-settings">
+                    <h3>Ayarlar</h3>
+                    <div class="settings-grid">
+                        <div class="setting-item">
+                            <label>Çalışma Süresi (dk)</label>
+                            <input type="number" id="workDuration" value="25" min="1" max="60">
+                        </div>
+                        <div class="setting-item">
+                            <label>Kısa Mola (dk)</label>
+                            <input type="number" id="shortBreak" value="5" min="1" max="30">
+                        </div>
+                        <div class="setting-item">
+                            <label>Uzun Mola (dk)</label>
+                            <input type="number" id="longBreak" value="15" min="5" max="60">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Notes View -->
+        <section class="view" id="view-notes">
+            <header class="view-header">
+                <h1><i class="fas fa-sticky-note"></i> Notlar</h1>
+                <button class="btn btn-primary" id="createNoteBtn">
+                    <i class="fas fa-plus"></i> Yeni Not
+                </button>
+            </header>
+
+            <div class="notes-layout">
+                <aside class="notes-sidebar">
+                    <div class="notes-search">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="notesSearch" placeholder="Not ara...">
+                    </div>
+                    <div class="notes-list" id="notesList">
+                        <!-- Notes list rendered by JS -->
+                    </div>
+                </aside>
+                <div class="notes-editor">
+                    <div class="editor-toolbar" id="editorToolbar">
+                        <button class="toolbar-btn" data-command="bold" title="Kalın">
+                            <i class="fas fa-bold"></i>
+                        </button>
+                        <button class="toolbar-btn" data-command="italic" title="İtalik">
+                            <i class="fas fa-italic"></i>
+                        </button>
+                        <button class="toolbar-btn" data-command="underline" title="Altı Çizili">
+                            <i class="fas fa-underline"></i>
+                        </button>
+                        <div class="toolbar-divider"></div>
+                        <button class="toolbar-btn" data-command="insertUnorderedList" title="Liste">
+                            <i class="fas fa-list-ul"></i>
+                        </button>
+                        <button class="toolbar-btn" data-command="insertOrderedList" title="Numaralı Liste">
+                            <i class="fas fa-list-ol"></i>
+                        </button>
+                        <div class="toolbar-divider"></div>
+                        <button class="toolbar-btn" data-command="formatBlock" data-value="H2" title="Başlık">
+                            <i class="fas fa-heading"></i>
+                        </button>
+                    </div>
+                    <input type="text" class="note-title-input" id="noteTitle" placeholder="Not başlığı...">
+                    <div class="note-content" id="noteContent" contenteditable="true" data-placeholder="Notlarını buraya yaz..."></div>
+                    <div class="editor-status">
+                        <span id="saveStatus">Kaydedildi</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Quiz View -->
+        <section class="view" id="view-quiz">
+            <header class="view-header">
+                <h1><i class="fas fa-question-circle"></i> Quiz</h1>
+                <button class="btn btn-primary" id="createQuizBtn">
+                    <i class="fas fa-plus"></i> Soru Ekle
+                </button>
+            </header>
+
+            <!-- Quiz Mode Selection -->
+            <div class="quiz-modes" id="quizModes">
+                <div class="mode-card" data-mode="practice">
+                    <i class="fas fa-dumbbell"></i>
+                    <h3>Pratik Modu</h3>
+                    <p>Tüm sorularla pratik yap</p>
+                </div>
+                <div class="mode-card" data-mode="test">
+                    <i class="fas fa-clipboard-check"></i>
+                    <h3>Test Modu</h3>
+                    <p>Zamanlı sınav simülasyonu</p>
+                </div>
+                <div class="mode-card" data-mode="review">
+                    <i class="fas fa-undo"></i>
+                    <h3>Yanlışları Gözden Geçir</h3>
+                    <p>Hatalı cevapları tekrarla</p>
+                </div>
+            </div>
+
+            <!-- Quiz Area (hidden until mode selected) -->
+            <div class="quiz-area hidden" id="quizArea">
+                <div class="quiz-progress">
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="quizProgress"></div>
+                    </div>
+                    <span class="progress-text" id="quizProgressText">0/0</span>
+                </div>
+
+                <div class="quiz-question" id="quizQuestion">
+                    <!-- Question rendered by JS -->
+                </div>
+
+                <div class="quiz-options" id="quizOptions">
+                    <!-- Options rendered by JS -->
+                </div>
+
+                <div class="quiz-actions">
+                    <button class="btn btn-secondary" id="skipQuestion">Atla</button>
+                    <button class="btn btn-primary" id="submitAnswer">Cevapla</button>
+                </div>
+            </div>
+
+            <!-- Quiz Results -->
+            <div class="quiz-results hidden" id="quizResults">
+                <div class="results-card">
+                    <div class="results-score">
+                        <span class="score-value" id="finalScore">0%</span>
+                        <span class="score-label">Başarı Oranı</span>
+                    </div>
+                    <div class="results-stats">
+                        <div class="result-stat">
+                            <i class="fas fa-check-circle"></i>
+                            <span id="correctCount">0</span> Doğru
+                        </div>
+                        <div class="result-stat">
+                            <i class="fas fa-times-circle"></i>
+                            <span id="wrongCount">0</span> Yanlış
+                        </div>
+                    </div>
+                    <button class="btn btn-primary" id="retryQuiz">Tekrar Dene</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Progress View -->
+        <section class="view" id="view-progress">
+            <header class="view-header">
+                <h1><i class="fas fa-chart-line"></i> İlerleme</h1>
+            </header>
+
+            <div class="progress-dashboard">
+                <!-- Weekly Overview -->
+                <div class="progress-card wide">
+                    <h3>Haftalık Çalışma Süresi</h3>
+                    <canvas id="weeklyChart"></canvas>
+                </div>
+
+                <!-- Subject Progress -->
+                <div class="progress-card">
+                    <h3>Ders Bazlı İlerleme</h3>
+                    <div class="subject-progress-list" id="subjectProgressList">
+                        <!-- Rendered by JS -->
+                    </div>
+                </div>
+
+                <!-- Achievement Cards -->
+                <div class="progress-card">
+                    <h3>Başarılar</h3>
+                    <div class="achievements-grid" id="achievementsGrid">
+                        <!-- Rendered by JS -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Planner View -->
+        <section class="view" id="view-planner">
+            <header class="view-header">
+                <h1><i class="fas fa-calendar-alt"></i> Çalışma Planlayıcı</h1>
+                <button class="btn btn-primary" id="addEventBtn">
+                    <i class="fas fa-plus"></i> Etkinlik Ekle
+                </button>
+            </header>
+
+            <div class="planner-container">
+                <div class="calendar-header">
+                    <button class="btn btn-icon" id="prevWeek">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <h2 id="currentWeekLabel">Bu Hafta</h2>
+                    <button class="btn btn-icon" id="nextWeek">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
+
+                <div class="calendar-grid" id="calendarGrid">
+                    <!-- Calendar rendered by JS -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Focus Mode View -->
+        <section class="view" id="view-focus">
+            <header class="view-header">
+                <h1><i class="fas fa-bullseye"></i> Odak Modu</h1>
+            </header>
+
+            <div class="focus-container">
+                <div class="focus-task">
+                    <input type="text" id="focusTask" placeholder="Şu anda ne üzerinde çalışıyorsun?">
+                </div>
+
+                <div class="focus-timer">
+                    <span class="focus-time" id="focusTime">00:00:00</span>
+                </div>
+
+                <div class="focus-controls">
+                    <button class="btn btn-large btn-primary" id="enterFocusMode">
+                        <i class="fas fa-play"></i> Odak Modunu Başlat
+                    </button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Music Player (Floating) -->
+    <div class="music-player" id="musicPlayer">
+        <button class="music-toggle" id="musicToggle">
+            <i class="fas fa-music"></i>
+        </button>
+        <div class="music-panel hidden" id="musicPanel">
+            <h4>Odak Müzikleri</h4>
+            <div class="music-options">
+                <button class="music-btn active" data-stream="lofi">Lo-Fi Beats</button>
+                <button class="music-btn" data-stream="piano">Piyano</button>
+                <button class="music-btn" data-stream="nature">Doğa Sesleri</button>
+                <button class="music-btn" data-stream="ambient">Ambient</button>
+            </div>
+            <div class="music-controls">
+                <button class="music-control-btn" id="musicPlayPause">
+                    <i class="fas fa-play"></i>
+                </button>
+                <input type="range" id="musicVolume" min="0" max="100" value="50">
+            </div>
+            <div class="youtube-embed hidden" id="youtubeEmbed">
+                <!-- YouTube iframe inserted here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Modals -->
+    <!-- Create Flashcard Modal -->
+    <div class="modal" id="flashcardModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Yeni Flashcard</h2>
+                <button class="modal-close" data-close="flashcardModal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>Ders</label>
+                    <select id="cardSubject">
+                        <option value="almanca">Almanca</option>
+                        <option value="biyoloji">Biyoloji</option>
+                        <option value="turkce">Türk Dili ve Edebiyatı</option>
+                        <option value="matematik">Matematik</option>
+                        <option value="din">Din Kültürü</option>
+                        <option value="ingilizce">İngilizce</option>
+                        <option value="kimya">Kimya</option>
+                        <option value="fizik">Fizik</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Ön Yüz (Soru)</label>
+                    <textarea id="cardFront" placeholder="Kartın ön yüzüne yazılacak metin..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Arka Yüz (Cevap)</label>
+                    <textarea id="cardBack" placeholder="Kartın arka yüzüne yazılacak metin..."></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" data-close="flashcardModal">İptal</button>
+                <button class="btn btn-primary" id="saveCardBtn">Kaydet</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Create Note Modal -->
+    <div class="modal" id="noteModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Yeni Not</h2>
+                <button class="modal-close" data-close="noteModal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>Ders</label>
+                    <select id="noteSubject">
+                        <option value="almanca">Almanca</option>
+                        <option value="biyoloji">Biyoloji</option>
+                        <option value="turkce">Türk Dili ve Edebiyatı</option>
+                        <option value="matematik">Matematik</option>
+                        <option value="din">Din Kültürü</option>
+                        <option value="ingilizce">İngilizce</option>
+                        <option value="kimya">Kimya</option>
+                        <option value="fizik">Fizik</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Başlık</label>
+                    <input type="text" id="newNoteTitle" placeholder="Not başlığı...">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" data-close="noteModal">İptal</button>
+                <button class="btn btn-primary" id="createNoteSubmit">Oluştur</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Create Quiz Question Modal -->
+    <div class="modal" id="quizModal">
+        <div class="modal-content modal-large">
+            <div class="modal-header">
+                <h2>Yeni Soru Ekle</h2>
+                <button class="modal-close" data-close="quizModal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>Ders</label>
+                    <select id="questionSubject">
+                        <option value="almanca">Almanca</option>
+                        <option value="biyoloji">Biyoloji</option>
+                        <option value="turkce">Türk Dili ve Edebiyatı</option>
+                        <option value="matematik">Matematik</option>
+                        <option value="din">Din Kültürü</option>
+                        <option value="ingilizce">İngilizce</option>
+                        <option value="kimya">Kimya</option>
+                        <option value="fizik">Fizik</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Soru</label>
+                    <textarea id="questionText" placeholder="Soruyu yazın..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Soru Tipi</label>
+                    <select id="questionType">
+                        <option value="multiple">Çoktan Seçmeli</option>
+                        <option value="written">Yazılı Cevap</option>
+                    </select>
+                </div>
+                <div id="multipleChoiceOptions">
+                    <div class="form-group">
+                        <label>Seçenekler (Doğru olanı işaretleyin)</label>
+                        <div class="options-list">
+                            <div class="option-item">
+                                <input type="radio" name="correctOption" value="0">
+                                <input type="text" placeholder="A Şıkkı">
+                            </div>
+                            <div class="option-item">
+                                <input type="radio" name="correctOption" value="1">
+                                <input type="text" placeholder="B Şıkkı">
+                            </div>
+                            <div class="option-item">
+                                <input type="radio" name="correctOption" value="2">
+                                <input type="text" placeholder="C Şıkkı">
+                            </div>
+                            <div class="option-item">
+                                <input type="radio" name="correctOption" value="3">
+                                <input type="text" placeholder="D Şıkkı">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="writtenAnswerOption" class="hidden">
+                    <div class="form-group">
+                        <label>Doğru Cevap</label>
+                        <input type="text" id="correctAnswer" placeholder="Doğru cevabı yazın...">
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" data-close="quizModal">İptal</button>
+                <button class="btn btn-primary" id="saveQuestionBtn">Kaydet</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Planner Event Modal -->
+    <div class="modal" id="eventModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Etkinlik Ekle</h2>
+                <button class="modal-close" data-close="eventModal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>Başlık</label>
+                    <input type="text" id="eventTitle" placeholder="Örn: Matematik çalış">
+                </div>
+                <div class="form-group">
+                    <label>Ders</label>
+                    <select id="eventSubject">
+                        <option value="">Ders Seçin</option>
+                        <option value="almanca">Almanca</option>
+                        <option value="biyoloji">Biyoloji</option>
+                        <option value="turkce">Türk Dili ve Edebiyatı</option>
+                        <option value="matematik">Matematik</option>
+                        <option value="din">Din Kültürü</option>
+                        <option value="ingilizce">İngilizce</option>
+                        <option value="kimya">Kimya</option>
+                        <option value="fizik">Fizik</option>
+                    </select>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Tarih</label>
+                        <input type="date" id="eventDate">
+                    </div>
+                    <div class="form-group">
+                        <label>Saat</label>
+                        <input type="time" id="eventTime">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Süre (dakika)</label>
+                    <input type="number" id="eventDuration" value="60" min="15" step="15">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" data-close="eventModal">İptal</button>
+                <button class="btn btn-primary" id="saveEventBtn">Kaydet</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Full Screen Focus Mode Overlay -->
+    <div class="focus-overlay hidden" id="focusOverlay">
+        <div class="focus-overlay-content">
+            <div class="focus-current-task" id="focusCurrentTask">Çalışıyorum...</div>
+            <div class="focus-overlay-timer" id="focusOverlayTimer">00:00:00</div>
+            <div class="focus-overlay-controls">
+                <button class="btn btn-large" id="exitFocusMode">
+                    <i class="fas fa-times"></i> Çık
+                </button>
+            </div>
+        </div>
+        <div class="focus-mini-music" id="focusMiniMusic">
+            <button class="music-control-btn" id="focusMusicToggle">
+                <i class="fas fa-music"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="js/data.js"></script>
+    <script src="js/subjects.js"></script>
+    <script src="js/flashcards.js"></script>
+    <script src="js/pomodoro.js"></script>
+    <script src="js/notes.js"></script>
+    <script src="js/quiz.js"></script>
+    <script src="js/progress.js"></script>
+    <script src="js/planner.js"></script>
+    <script src="js/focus.js"></script>
+    <script src="js/music.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
