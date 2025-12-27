@@ -247,6 +247,11 @@ a:hover {
     justify-content: center;
 }
 
+.sidebar.collapsed .sidebar-nav {
+    padding: 1rem 0;
+    align-items: center;
+}
+
 .sidebar-nav {
     flex: 1;
     padding: 1rem 0.75rem;
