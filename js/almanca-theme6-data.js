@@ -8,6 +8,19 @@
 
 const AlmancaTheme6Data = {
     // Theme 6: Traditionen (Gelenekler) - Pages 60-70
+    VERSION: '1.0.0', // Increment this to force re-import
+    STORAGE_KEY: 'almanca_theme6_imported',
+
+    // Check if already imported
+    isAlreadyImported() {
+        const imported = localStorage.getItem(this.STORAGE_KEY);
+        return imported === this.VERSION;
+    },
+
+    // Mark as imported
+    markImported() {
+        localStorage.setItem(this.STORAGE_KEY, this.VERSION);
+    },
 
     flashcards: [
         // Core Vocabulary - Traditions & Culture
@@ -169,7 +182,13 @@ const AlmancaTheme6Data = {
     ],
 
     // Import function to add all data to StudyHub
-    importAll() {
+    importAll(force = false) {
+        // Check if already imported (unless forced)
+        if (!force && this.isAlreadyImported()) {
+            console.log('Almanca Theme 6 already imported. Use AlmancaTheme6Data.importAll(true) to force re-import.');
+            return { cardsAdded: 0, questionsAdded: 0, skipped: true };
+        }
+
         console.log('Importing Almanca Theme 6 data...');
 
         let cardsAdded = 0;
@@ -187,6 +206,9 @@ const AlmancaTheme6Data = {
             questionsAdded++;
         });
 
+        // Mark as imported to prevent duplicates
+        this.markImported();
+
         console.log(`✅ Imported ${cardsAdded} flashcards and ${questionsAdded} quiz questions for Almanca!`);
 
         // Show toast notification if available
@@ -198,9 +220,11 @@ const AlmancaTheme6Data = {
     }
 };
 
-// Auto-import when script loads
+// Auto-import when script loads (only if not already imported)
 if (typeof DataManager !== 'undefined') {
-    AlmancaTheme6Data.importAll();
+    if (!AlmancaTheme6Data.isAlreadyImported()) {
+        AlmancaTheme6Data.importAll();
+    }
 } else {
     console.log('DataManager not found. Run AlmancaTheme6Data.importAll() after page loads.');
 }
